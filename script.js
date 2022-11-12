@@ -102,6 +102,7 @@ vqvButton.addEventListener('click', () => {
 colorPallet.addEventListener('click', changeColor);
 
 board.addEventListener('mousedown', (event) => {
+  console.log(event);
   if (selectedToll.classList.contains('pen')) {
     paintPixel(event);
     painting = true;
@@ -205,3 +206,10 @@ tolls.addEventListener('click', (event) => {
     selectedToll.style.backgroundColor = 'rgba(107, 107, 107, 50%)';
   }
 });
+
+const element = document.getElementById('panzoom')
+	const panzoom = Panzoom(element, {
+	});
+	// enable mouse wheel
+	const parent = element.parentElement
+	parent.addEventListener('wheel', panzoom.zoomWithWheel);

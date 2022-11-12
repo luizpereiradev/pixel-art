@@ -139,6 +139,8 @@ input{
 .superior{
   width: 100%;
   background-color: rgba(55, 61, 71);
+  position: relative;
+  top: -100px;
 }
 
 .tolls{
