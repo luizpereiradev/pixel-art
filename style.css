@@ -67,10 +67,11 @@ aside {
   height: 500px;
   display: grid;
   grid-template-columns: repeat(5, 1fr);
+  background-color: black;
 }
 
-.pixel {
-  background-color: white;
+.pixel:hover {
+  opacity: 0.6;
 }
 
 main{
@@ -148,6 +149,7 @@ input{
   justify-content: center;
   align-items: center;
   width: 110%;
+  flex-wrap: wrap;
 }
 
 .tolls div{

@@ -3,6 +3,7 @@ const clearButton = document.querySelector('#clear-board');
 let pixels = document.querySelectorAll('.pixel');
 const colorPallet = document.querySelector('#color-palette');
 let painting
+let erasing 
 const selected = document.querySelector('.colorSelected');
 const colorPicker = document.querySelector('.colorSelectedInput');
 let selectedToll = document.querySelector('#selected-tool');
@@ -66,9 +67,9 @@ const createPixels = (px) => {
 
 const changeColor = (event) => {
   const color = event.target;
-  console.log(color);
   if (color.className === 'color') {
     selected.style.backgroundColor = color.style.backgroundColor;
+    board.style.backgroundColor = color.style.backgroundColor;
   }
 };
 
@@ -102,7 +103,6 @@ vqvButton.addEventListener('click', () => {
 colorPallet.addEventListener('click', changeColor);
 
 board.addEventListener('mousedown', (event) => {
-  console.log(event);
   if (selectedToll.classList.contains('pen')) {
     paintPixel(event);
     painting = true;
@@ -115,23 +115,27 @@ board.addEventListener('mousedown', (event) => {
     const pixelsToPaint = [];
     pixelsToPaint.push([x,y]);
     floodfill(x,y,pixelColor,color)
+  }else if(selectedToll.classList.contains('eraser')){
+    erasing = true;
+    erase(event);
   }
 });
 
 board.addEventListener('mouseover', (event) => {
   if (painting) {
     paintPixel(event);
+  }else if(erasing){
+    erase(event);
   }
-  console.log(event.target.id)
 });
 
 board.addEventListener('mouseup', () => {
   painting = false;
+  erasing = false;
 });
 
 const loadPixels = () => {
   const boardSize = localStorage.getItem('boardSize');
-  console.log(boardSize);
   createPixels(boardSize != null ? boardSize : 5);
   const localPixels = JSON.parse(localStorage.getItem('pixelBoard'));
   pixels = document.querySelectorAll('.pixel');
@@ -165,6 +169,7 @@ colorPicker.addEventListener("change", watchColorPicker, false);
 
 function watchColorPicker(event) {
   selected.style.backgroundColor = event.target.value;
+  board.style.backgroundColor = color.style.backgroundColor;
 }
 
 function get_color(x,y) {
@@ -179,8 +184,7 @@ function floodfill(x,y,A,B) {
   console.log(x,y,A,B)
   const boardSize = localStorage.getItem('boardSize');
   if ((x<1) || (x>boardSize) || (y<1) || (y>boardSize)) return;
-  console.log(get_color(x,y))
-  if (get_color(x,y)!=A && get_color(x,y)!= '#E6E6E6' &&  get_color(x,y)!= 'rgb(230, 230, 230)') return;
+  if (get_color(x,y)!=A && get_color(x,y)!= '#E6E6E6' &&  get_color(x,y)!= 'white') return;
   set_color(x,y,B);
   floodfill(x-1,y-1,A,B);
   floodfill(x-1,y,A,B);
@@ -199,7 +203,6 @@ tolls.addEventListener('click', (event) => {
   selectedToll.parentElement.style.backgroundColor = '';
   selectedToll = toll;
   selectedToll.classList.add('selected-toll');
-  console.log(selectedToll);
   if(selectedToll.classList.contains('fa-solid')){
     selectedToll.parentElement.style.backgroundColor = 'rgba(107, 107, 107, 50%)';
   }else{
@@ -208,8 +211,25 @@ tolls.addEventListener('click', (event) => {
 });
 
 const element = document.getElementById('panzoom')
-	const panzoom = Panzoom(element, {
-	});
-	// enable mouse wheel
-	const parent = element.parentElement
-	parent.addEventListener('wheel', panzoom.zoomWithWheel);
+const panzoom = Panzoom(element, {
+});
+// enable mouse wheel
+const parent = element.parentElement
+parent.addEventListener('wheel', panzoom.zoomWithWheel);
+
+// eraser toll
+const erase = (event) => {
+  pixel = event.target
+  const  x= parseInt(pixel.id.split('x')[1].split('y')[0]);
+  const y = parseInt(pixel.id.split('y')[1]);
+
+  console.log(x, y)
+  console.log(pixel.id)
+
+  if (x % 2 === 0 && y % 2 === 0 || x % 2 !== 0 && y % 2 !== 0) {
+    pixel.style.backgroundColor = 'white';
+  }
+  if (x % 2 === 0 && y % 2 !== 0 || x % 2 !== 0 && y % 2 === 0) {
+    pixel.style.backgroundColor = '#E6E6E6';
+  }
+}
