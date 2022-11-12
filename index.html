@@ -6,22 +6,53 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Pixel Art</title>
     <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="color-picker.css">
+    <script src="./color-picker.min.js"></script>
+    <script src="https://kit.fontawesome.com/cca8d15ad0.js" crossorigin="anonymous"></script>
 </head>
 <body>
-    <h1 id="title">Paleta de Cores</h1>
-    <div id="color-palette">
-    </div>
-    <div class="center">
-        <div>
-            <input type="number" id="board-size" min='1'> 
-            <button id="generate-board">VQV</button>
-        </div>
-        <button id="clear-board">Limpar</button>
-        <button id="button-random-color">Cores aleatórias</button>
-    </div>
-    <div id="pixel-board">
+    <aside>
+        <div id="color-picker"></div>
+        <div class="flex">
+            <p>Cor Selecionada: </p>
+            <div type="color" class="colorSelected"></div>
+            <input type="color" class="colorSelectedInput"></input>
 
-    </div>
+        </div>
+        
+        <div class="container-colors">
+            <h3>Paleta de Cores</h3>
+            <div id="color-palette">
+        </div>
+        </div>
+
+    </aside>
+
+    <main>
+        <div class="superior"><p>pen</p></div>
+        <div id="pixel-board"></div>
+    </main>
+
+    <aside id="functions">
+        <div class="buttons">
+            <input type="number" id="board-size" min='1' placeholder="Tamanho do Board">
+            <div>
+                <button class = "button" id="generate-board">VQV</button>
+                <button class = "button" id="clear-board">Limpar</button>
+            </div>
+            <p>Ferramentas</p>
+            <div class="tolls">
+                <div class="pen" id="selected-tool">
+                    <i class="fa-solid fa-pen fa-2xl pen"></i>
+                </div>
+                <div class="fill">
+                    <i class="fa-solid fa-fill fa-2xl fill"></i>
+                </div>
+            </div>
+            
+        </div>
+    </aside>
+
 
     <script src="./script.js"></script>
 </body>
