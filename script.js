@@ -2,8 +2,7 @@ const board = document.querySelector('#pixel-board');
 const clearButton = document.querySelector('#clear-board');
 let pixels = document.querySelectorAll('.pixel');
 const colorPallet = document.querySelector('#color-palette');
-let painting
-let erasing 
+let painting, erasing
 const selected = document.querySelector('.colorSelected');
 const colorPicker = document.querySelector('.colorSelectedInput');
 let selectedToll = document.querySelector('#selected-tool');
@@ -55,14 +54,12 @@ const createPixels = (px) => {
     x += 1;
     const pixel = document.createElement('div');
     pixel.className = 'pixel';
-    pixel.style.height = `${500 / px}px`;
-    pixel.style.width = `${500 / px}px`;
+    pixel.style.height = `${600 / px}px`;
+    pixel.style.width = `${600 / px}px`;
     pixel.id = `x${x}y${y}`;
-    // um cinza e outro branco
     pixel.style.backgroundColor = index % 2 === 0 ? 'white' : '#E6E6E6';
     board.appendChild(pixel);
   }
-  board.height = `500px`;
 };
 
 const changeColor = (event) => {
@@ -107,17 +104,20 @@ board.addEventListener('mousedown', (event) => {
     paintPixel(event);
     painting = true;
   }else if(selectedToll.classList.contains('fill')){
-    const color = selected.style.backgroundColor;
+    const colorToPaint = selected.style.backgroundColor;
     const pixel = event.target;
     const pixelColor = pixel.style.backgroundColor;
     const x = parseInt(pixel.id.split('x')[1].split('y')[0]);
     const y = parseInt(pixel.id.split('y')[1]);
-    const pixelsToPaint = [];
-    pixelsToPaint.push([x,y]);
-    floodfill(x,y,pixelColor,color)
+    const firstPixel = get_color(x,y);
+    console.log(firstPixel);
+    floodfill(x,y,pixelColor,colorToPaint, firstPixel)
   }else if(selectedToll.classList.contains('eraser')){
     erasing = true;
     erase(event);
+  }else if(selectedToll.classList.contains('colorPiker')){
+    const pixel = event.target;
+    selected.style.backgroundColor = pixel.style.backgroundColor;
   }
 });
 
@@ -180,20 +180,23 @@ function set_color(x,y,color) {
   document.getElementById("x"+x+"y"+y).style.backgroundColor = color;
 }
 
-function floodfill(x,y,A,B) {
-  console.log(x,y,A,B)
+function floodfill(x,y,A,B, firstPixel) {
   const boardSize = localStorage.getItem('boardSize');
   if ((x<1) || (x>boardSize) || (y<1) || (y>boardSize)) return;
-  if (get_color(x,y)!=A && get_color(x,y)!= '#E6E6E6' &&  get_color(x,y)!= 'white') return;
+  if(firstPixel == 'rgb(230, 230, 230)' || firstPixel == 'white'){
+    if (get_color(x,y) != 'rgb(230, 230, 230)' && get_color(x,y) != 'white') return;
+  }else{
+    if (get_color(x,y)!=A) return;
+  }
   set_color(x,y,B);
-  floodfill(x-1,y-1,A,B);
-  floodfill(x-1,y,A,B);
-  floodfill(x-1,y+1,A,B);
-  floodfill(x,y-1,A,B);
-  floodfill(x,y+1,A,B);
-  floodfill(x+1,y-1,A,B);
-  floodfill(x+1,y,A,B);
-  floodfill(x+1,y+1,A,B);
+  floodfill(x-1,y-1,A,B, firstPixel);
+  floodfill(x-1,y,A,B, firstPixel);
+  floodfill(x-1,y+1,A,B, firstPixel);
+  floodfill(x,y-1,A,B, firstPixel);
+  floodfill(x,y+1,A,B, firstPixel);
+  floodfill(x+1,y-1,A,B, firstPixel);
+  floodfill(x+1,y,A,B, firstPixel);
+  floodfill(x+1,y+1,A,B, firstPixel);
 }
 
 tolls.addEventListener('click', (event) => {
@@ -217,7 +220,6 @@ const panzoom = Panzoom(element, {
 const parent = element.parentElement
 parent.addEventListener('wheel', panzoom.zoomWithWheel);
 
-// eraser toll
 const erase = (event) => {
   pixel = event.target
   const  x= parseInt(pixel.id.split('x')[1].split('y')[0]);
@@ -233,3 +235,28 @@ const erase = (event) => {
     pixel.style.backgroundColor = '#E6E6E6';
   }
 }
+
+//htmltocanvas dowload image
+function downloadCanvas() {
+  html2canvas(document.querySelector("#pixel-board")).then(canvas => {
+    const a = document.createElement('a');
+    a.href = canvas.toDataURL("image/png")
+    a.download = 'pixel-art.png';
+    a.click();
+  });
+}
+
+const preview = document.getElementById('preview');
+
+preview.addEventListener('click', () => {
+  const modal = document.querySelector('.modal');
+  modal.classList.add('show');
+});
+
+const modalClose = document.querySelector('.close');
+modalClose.addEventListener('click', () => {
+  const modal = document.querySelector('.modal');
+  modal.classList.remove('show')
+  const modalBody = document.querySelector('.modal-body');
+  modalBody.innerHTML = '';
+});

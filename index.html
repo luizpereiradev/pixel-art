@@ -10,17 +10,11 @@
     <script src="./color-picker.min.js"></script>
     <script src="https://kit.fontawesome.com/cca8d15ad0.js" crossorigin="anonymous"></script>
     <script src="./panzoom.js"></script>
+    <script src="./htmltocanvas.js"></script>
 </head>
 <body>
     <aside>
         <div id="color-picker"></div>
-        <div class="flex">
-            <p>Cor Selecionada: </p>
-            <div type="color" class="colorSelected"></div>
-            <input type="color" class="colorSelectedInput"></input>
-
-        </div>
-        
         <div class="container-colors">
             <h3>Paleta de Cores</h3>
             <div id="color-palette">
@@ -55,12 +49,36 @@
                     <i class="fa-solid fa-fill fa-2xl fill"></i>
                 </div>
                 <div class="colorPiker">
-                    <i class="fa-solid fa-eye-dropper fa-2xl"></i>
+                    <i class="fa-solid fa-eye-dropper fa-2xl colorPiker"></i>
                 </div>
             </div>
             
+            <div class="flex">
+                <p>Selected:</p>
+                <div type="color" class="colorSelected"></div>
+                <input type="color" class="colorSelectedInput"></input>
+            </div>
+
+            <button class="button" id="preview">Preview and Download</button>
         </div>
     </aside>
+
+
+    <div class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <span class="close">&times;</span>
+                <h2>Preview</h2>
+            </div>
+            <div class="modal-body">
+                <p>Salve sua imagem</p>
+                <a id="download" download="pixel-art.png">Download</a>
+            </div>
+            <div class="modal-footer">
+                <h3>Pixel Art</h3>
+            </div>
+        </div>
+    </div>
 
 
     <script src="./script.js"></script>
