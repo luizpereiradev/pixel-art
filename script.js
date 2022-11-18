@@ -235,28 +235,3 @@ const erase = (event) => {
     pixel.style.backgroundColor = '#E6E6E6';
   }
 }
-
-//htmltocanvas dowload image
-function downloadCanvas() {
-  html2canvas(document.querySelector("#pixel-board")).then(canvas => {
-    const a = document.createElement('a');
-    a.href = canvas.toDataURL("image/png")
-    a.download = 'pixel-art.png';
-    a.click();
-  });
-}
-
-const preview = document.getElementById('preview');
-
-preview.addEventListener('click', () => {
-  const modal = document.querySelector('.modal');
-  modal.classList.add('show');
-});
-
-const modalClose = document.querySelector('.close');
-modalClose.addEventListener('click', () => {
-  const modal = document.querySelector('.modal');
-  modal.classList.remove('show')
-  const modalBody = document.querySelector('.modal-body');
-  modalBody.innerHTML = '';
-});

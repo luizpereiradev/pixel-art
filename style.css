@@ -216,3 +216,9 @@ input{
 #preview{
 background-color: #3e8e41;
 }
+
+@media only screen and (max-width: 1100px) {
+  .color-container{
+    display: none;
+  }
+}
