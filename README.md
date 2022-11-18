@@ -10,4 +10,4 @@ Despite the simple ideia about the project, was great to start mixing all knowle
 This is the first of many projects that I will post here!
 ## Demo
 
-![](https://github.com/luizpereiradev/pixel-art/example.gif)
+![](https://github.com/luizpereiradev/pixel-art/blob/main/example.gif)
